@@ -7,7 +7,7 @@ BIN	= $(EXPORT)/$(LIB_NAME)
 OBJ = build
 SRC = src
 
-SOURCES =  libAntEngine.cpp
+SOURCES = $(shell find $(SRC) -name *.cpp)
 INCS	= -lsfml-graphics -lsfml-window -lsfml-system
 LIBS	=
 
@@ -16,14 +16,14 @@ LINKOBJ	= $(SOURCES:.cpp=.o)
 all: clean $(BIN)
 
 $(BIN): $(LINKOBJ)
-	ar crv $(BIN) $(OBJ)/$(LINKOBJ)
-	cp libAntEngine.h $(EXPORT)
+	ar crv $(BIN) $(LINKOBJ)
+	cp $(SRC)/libAntEngine.h $(EXPORT)
 
 .cpp.o:
-	$(GCC) -g -c $< -o $(OBJ)/$@ $(INCS) -std=c++0x
+	$(GCC) -g -c $< -o $@ $(INCS) -std=c++0x
 
 clean:
-	rm -f $(OBJ)/$(LINKOBJ)
+	rm -f $(LINKOBJ)
 	rm -f $(BIN)
 	rm -f $(EXPORT)/*.h
 
