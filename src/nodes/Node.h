@@ -9,18 +9,29 @@
 #include <map>
 #include <string>
 namespace antEngine {
+    class Position {
+    public:
+        int x, y;
+        Position(int x, int y);
+    };
 
     class Node {
     public:
-
-
         std::string name;
+        Node* parent;
         std::map<std::string, Node*> children;
+
+        Position pos;
+
+        // METHODS
         explicit Node(std::string name="");
+        explicit Node(Node* parent, std::string name="");
         ~Node();
 
         void registerNode(const std::string& name, Node* node);
         Node* getNode(const std::string& name);
+
+        void setPosition(int x, int y);
 
         // Called the first time the node is loaded/enters the scene
         virtual void ready();

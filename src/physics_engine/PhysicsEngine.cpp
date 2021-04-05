@@ -3,3 +3,10 @@
 //
 
 #include "PhysicsEngine.h"
+namespace antEngine {
+
+    void PhysicsEngine::registerPhysicsBody(std::string id, antEngine::PhysicsBodyNode *node) {
+
+    }
+
+}

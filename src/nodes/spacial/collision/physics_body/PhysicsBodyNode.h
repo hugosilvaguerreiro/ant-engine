@@ -6,11 +6,17 @@
 #define ANT_ENGINE_PHYSICSBODYNODE_H
 
 #include "../../../Node.h"
+#include "../CollisionShape.h"
+
+#include <eigen3/Eigen/Dense>
+using namespace Eigen;
 
 namespace antEngine {
 
     class PhysicsBodyNode : public Node {
-
+        CollisionShape *shape;
+        float mass;
+        Array22f velocity;
     };
 }
 

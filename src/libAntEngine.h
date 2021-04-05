@@ -8,6 +8,8 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Window/Window.hpp>
 #include <bits/stdc++.h>
+#include "nodes/Scene.h"
+#include "physics_engine/PhysicsEngine.h"
 
 namespace antEngine {
 
@@ -32,17 +34,21 @@ namespace antEngine {
     };
 
     class Application;
-    class Renderer {
+    class AntEngine {
+    private:
         sf::Image         current_frame;
         sf::Texture       current_frame_texture;
         sf::Sprite        current_frame_sprite;
         MouseHandler* handler;
 
+        void loadSceneTree(Scene *scene);
+        PhysicsEngine physicsEngine;
+
     public:
         WINDOW_SIZE       size;
         sf::RenderWindow  window;
 
-        Renderer(WINDOW_SIZE size, std::string title="window");
+        AntEngine(WINDOW_SIZE size, std::string title="window");
 
 
         /*
@@ -78,13 +84,14 @@ namespace antEngine {
 
     class Application {
     public:
-        Application(const Application&) = delete;
-        Application(Renderer& renderer) { this->renderer = &renderer; }
+        Scene *mainScene = nullptr;
+        AntEngine* engine;
 
-        Renderer* renderer;
-        virtual void execute() = 0;
-        virtual void stop() = 0;
+        Application(const Application&) = delete;
+        Application(AntEngine& engine) { this->engine = &engine; }
+
     };
+
 
 }
 
