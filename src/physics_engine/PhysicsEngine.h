@@ -6,15 +6,25 @@
 #define ANT_ENGINE_PHYSICSENGINE_H
 
 #include <string>
+#include <ctime>
 #include "../nodes/spacial/collision/physics_body/PhysicsBodyNode.h"
 
 namespace antEngine {
 
     class PhysicsEngine {
-    std::map<std::string, Node*> nodes;
-    public:
-        void registerPhysicsBody(std::string id, PhysicsBodyNode *node);
+    std::map<std::string, PhysicsBodyNode*> nodes;
+    clock_t delta;
 
+    void doPhysicsStep(float d);
+    void collisionDetection();
+    bool colliding(PhysicsBodyNode* node1, PhysicsBodyNode* node2);
+
+    public:
+        PhysicsEngine();
+        void start();
+        void stop();
+        void registerPhysicsBody(PhysicsBodyNode *node);
+        void physicsUpdate();
     };
 }
 

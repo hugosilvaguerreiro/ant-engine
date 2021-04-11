@@ -8,6 +8,7 @@ OBJ = build
 SRC = src
 
 SOURCES = $(shell find $(SRC) -name *.cpp)
+HEADERS = $(shell find $(SRC) -name *.h)
 INCS	= -lsfml-graphics -lsfml-window -lsfml-system
 LIBS	=
 
@@ -17,7 +18,6 @@ all: clean $(BIN)
 
 $(BIN): $(LINKOBJ)
 	ar crv $(BIN) $(LINKOBJ)
-	cp $(SRC)/libAntEngine.h $(EXPORT)
 
 .cpp.o:
 	$(GCC) -g -c $< -o $@ $(INCS) -std=c++0x
@@ -32,7 +32,8 @@ run: clean $(BIN)
 
 install: $(BIN)
 	sudo cp $(BIN) /usr/local/lib
-	sudo cp $(EXPORT)/*.h /usr/local/include/
+	rsync -a --include '*/' --include '*.h' --exclude '*' src/ export/AntEngine
+	sudo cp -r $(EXPORT)/AntEngine /usr/local/include/
 
 valgrind:
 	valgrind --show-leak-kinds=all \

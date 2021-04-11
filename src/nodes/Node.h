@@ -17,7 +17,7 @@ namespace antEngine {
 
     class Node {
     public:
-        std::string name;
+        std::string id;
         Node* parent;
         std::map<std::string, Node*> children;
 

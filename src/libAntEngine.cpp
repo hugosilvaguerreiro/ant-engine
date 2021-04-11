@@ -85,7 +85,7 @@ namespace antEngine {
         for (it = scene->children.begin(); it != scene->children.end(); it++) {
             // for now we only have physics objects, so all should end up registered
             if (dynamic_cast<PhysicsBodyNode*>(it->second) != nullptr) {
-                this->physicsEngine.registerPhysicsBody(it->first, dynamic_cast<PhysicsBodyNode *>(it->second));
+                this->physicsEngine.registerPhysicsBody(dynamic_cast<PhysicsBodyNode*>(it->second));
             } else if (dynamic_cast<Scene*>(it->second) != nullptr) {
                 this->loadSceneTree(dynamic_cast<Scene *>(it->second));
             } else {
@@ -101,13 +101,16 @@ namespace antEngine {
         }
         // load the main scene
         this->loadSceneTree(app.mainScene);
-
+        this->physicsEngine.start();
         while (this->windowOpen()) {
 
             this->checkEvents(); //checks if window has been closed
+            this->physicsEngine.physicsUpdate();
 
+            this->renderFrame();
             this->window.clear();
         }
+        this->physicsEngine.stop();
         //app.stop();
     }
 

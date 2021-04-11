@@ -7,16 +7,20 @@
 
 #include "../../../Node.h"
 #include "../CollisionShape.h"
-
 #include <eigen3/Eigen/Dense>
+
 using namespace Eigen;
 
 namespace antEngine {
 
     class PhysicsBodyNode : public Node {
+    public:
         CollisionShape *shape;
         float mass;
         Array22f velocity;
+
+        void onCollision(PhysicsBodyNode* other);
+        void onPhysicsStep(float delta);
     };
 }
 
