@@ -18,14 +18,14 @@ namespace antEngine {
     class Node {
     public:
         std::string id;
-        Node* parent;
+        Node* parent= nullptr;
         std::map<std::string, Node*> children;
 
         Position pos;
 
         // METHODS
-        explicit Node(std::string name="");
-        explicit Node(Node* parent, std::string name="");
+        Node(std::string nodeId, Position pos);
+        Node(Node *parent, std::string  nodeId);
         ~Node();
 
         void registerNode(const std::string& name, Node* node);

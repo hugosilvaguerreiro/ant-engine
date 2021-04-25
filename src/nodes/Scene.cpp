@@ -4,6 +4,8 @@
 
 #include "Scene.h"
 
-namespace antEngine {
+#include <utility>
 
+namespace antEngine {
+    Scene::Scene(std::string nodeId, Position pos) : Node(std::move(nodeId), pos) {}
 }

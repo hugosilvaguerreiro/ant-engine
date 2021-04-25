@@ -8,11 +8,16 @@
 
 namespace antEngine {
 
-    Node::Node(std::string nodeId) : children(), id(std::move(nodeId)), pos(Position(0, 0)) {}
+    Node::Node(std::string nodeId, Position pos) : children(), id(std::move(nodeId)), pos(pos) {}
+
+    Node::Node(Node *parent, std::string  nodeId) : parent(parent), children(), id(std::move(nodeId)), pos(Position(0,0)) {
+
+    }
 
     void Node::registerNode(const std::string& name, Node *node) {
         std::pair<std::string ,Node*> p(name, node);
         this->children.insert(p);
+        node->parent = this;
     }
 
     Node *Node::getNode(const std::string& name) {
@@ -32,12 +37,11 @@ namespace antEngine {
 
     void Node::clean() {}
 
-    Node::Node(Node *parent, std::string name) : parent(parent), id(std::move(name)), pos(Position(0, 0)) {}
-
     void Node::setPosition(int x, int y) {
         this->pos.x = x;
         this->pos.y = y;
     }
+
 
     Node::~Node() = default;
 

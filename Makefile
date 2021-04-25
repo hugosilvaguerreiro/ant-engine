@@ -14,7 +14,7 @@ LIBS	=
 
 LINKOBJ	= $(SOURCES:.cpp=.o)
 
-all: clean $(BIN)
+all: $(BIN)
 
 $(BIN): $(LINKOBJ)
 	ar crv $(BIN) $(LINKOBJ)

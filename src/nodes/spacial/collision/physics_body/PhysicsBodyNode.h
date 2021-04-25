@@ -15,9 +15,11 @@ namespace antEngine {
 
     class PhysicsBodyNode : public Node {
     public:
-        CollisionShape *shape;
+        CollisionShape *shape{};
         float mass;
         Array22f velocity;
+
+        explicit PhysicsBodyNode(std::string id, Position pos, float mass=1.0);
 
         void onCollision(PhysicsBodyNode* other);
         void onPhysicsStep(float delta);
