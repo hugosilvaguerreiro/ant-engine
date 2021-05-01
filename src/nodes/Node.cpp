@@ -8,9 +8,10 @@
 
 namespace antEngine {
 
-    Node::Node(std::string nodeId, Position pos) : children(), id(std::move(nodeId)), pos(pos) {}
+    Node::Node(std::string nodeId, Position pos) : children(), id(std::move(nodeId)), pos(pos), rotation(0) {}
 
-    Node::Node(Node *parent, std::string  nodeId) : parent(parent), children(), id(std::move(nodeId)), pos(Position(0,0)) {
+    Node::Node(Node *parent, std::string  nodeId) : parent(parent), children(), id(std::move(nodeId)),
+                                                    pos(Position(0,0)) {
 
     }
 
@@ -40,6 +41,10 @@ namespace antEngine {
     void Node::setPosition(int x, int y) {
         this->pos.x = x;
         this->pos.y = y;
+    }
+
+    void Node::render(Renderer *renderer) {
+
     }
 
 

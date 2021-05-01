@@ -1,4 +1,5 @@
 #include "libAntEngine.h"
+#include "renderer/NCursesRenderer.h"
 
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <iostream>
@@ -7,9 +8,9 @@ namespace antEngine {
 
     AntEngine::AntEngine(WINDOW_SIZE window_size, const std::string& title) {
        // this->renderer = new SfmlRenderer(window_size, title);
-       this->renderer = new AsciiRenderer();
+       //this->renderer = new AsciiRenderer();
+       this->renderer = new NCursesRenderer();
     }
-
 
     void AntEngine::loadSceneTree(Scene *scene) {
 
@@ -36,14 +37,13 @@ namespace antEngine {
         this->loadSceneTree(app.mainScene);
         this->physicsEngine.start();
         while (this->renderer->windowOpen()) {
-
             //this->renderer->renderSquare(10,10, 600, RGBA{0,0,0,50});
             //this->renderer->renderSquare(100,100, 50, RGBA{0,0,0,200});
-            this->renderer->renderLine(10, 10, 500, 300,  RGBA{0,0,0,200});
+            //this->renderer->renderLine(10, 10, 500, 300,  RGBA{0,0,0,200});
 
             this->renderer->checkEvents(); //checks if window has been closed
             this->physicsEngine.physicsUpdate();
-
+            app.mainScene->render(this->renderer);
             this->renderer->renderFrame();
             this->renderer->clearFrame();
         }

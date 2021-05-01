@@ -16,11 +16,27 @@ namespace antEngine {
     // Users should implement these
     void PhysicsBodyNode::onPhysicsStep(float delta) {
        // std::cout << "On physics step " << this->id << " " << delta << "\n";
-        
+        this->accumulatedDelta += delta;
+
+        if (this->accumulatedDelta > 0.05) {
+            //this->pos.y += 1;
+            this->accumulatedDelta = 0;
+            this->rotation += 0.25;
+        }
     }
 
-    PhysicsBodyNode::PhysicsBodyNode(std::string nodeId, Position pos, float mass) : Node(std::move(nodeId), pos), mass(mass) {
+    void PhysicsBodyNode::render(Renderer *renderer) {
+        if(this->renderingShape != nullptr) {
+            this->renderingShape->render(renderer);
+        }
+    }
 
+    PhysicsBodyNode::PhysicsBodyNode(std::string id, Position pos, float mass, Shape *renderingShape,
+                                     CollisionShape *shape) :  Node(std::move(id), pos), mass(mass),
+                                     renderingShape(renderingShape), shape(shape), accumulatedDelta(0) {
+        if(this->renderingShape != nullptr) {
+            renderingShape->parent = this;
+        }
     }
 
 }

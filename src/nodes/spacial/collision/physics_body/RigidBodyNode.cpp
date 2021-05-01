@@ -6,7 +6,12 @@
 
 #include <utility>
 
-antEngine::RigidBodyNode::RigidBodyNode(std::string id, antEngine::Position pos, float mass) : PhysicsBodyNode(std::move(id), pos,
-                                                                                                               mass) {
-
+namespace antEngine {
+    RigidBodyNode::RigidBodyNode(std::string id, antEngine::Position pos, float mass,
+                                            Shape* renderingShape, CollisionShape* shape) :
+                                        PhysicsBodyNode(std::move(id), pos, mass, renderingShape, shape) {
+        if(this->renderingShape != nullptr) {
+            renderingShape->parent = this;
+        }
+    }
 }

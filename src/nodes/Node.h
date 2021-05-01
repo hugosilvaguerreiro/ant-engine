@@ -8,6 +8,8 @@
 
 #include <map>
 #include <string>
+#include "../renderer/Renderer.h"
+
 namespace antEngine {
     class Position {
     public:
@@ -22,6 +24,7 @@ namespace antEngine {
         std::map<std::string, Node*> children;
 
         Position pos;
+        float rotation=0.0f;
 
         // METHODS
         Node(std::string nodeId, Position pos);
@@ -42,10 +45,12 @@ namespace antEngine {
         // Called every physics calculation
         virtual void physicsStep(const float& delta);
 
+        // Called before rendering the next frame
+        virtual void render(Renderer* renderer);
+
         // Called when the node leaves the scene/ is deleted
         virtual void clean();
     };
-
 }
 
 #endif //ANT_ENGINE_NODE_H

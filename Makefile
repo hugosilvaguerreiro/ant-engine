@@ -9,8 +9,9 @@ SRC = src
 
 SOURCES = $(shell find $(SRC) -name *.cpp)
 HEADERS = $(shell find $(SRC) -name *.h)
-INCS	= -lsfml-graphics -lsfml-window -lsfml-system
-LIBS	=
+#INCS	= -lsfml-graphics -lsfml-window -lsfml-system
+INCS    = -lncurses
+LIBS	= /usr/lib/libncurses.a -ldl
 
 LINKOBJ	= $(SOURCES:.cpp=.o)
 

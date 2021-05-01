@@ -12,6 +12,8 @@ namespace antEngine {
     class Scene : public Node {
     public:
         Scene(std::string nodeId, Position pos);
+
+        void render(Renderer *renderer) override;
     };
 }
 

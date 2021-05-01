@@ -6,17 +6,17 @@
 #define ANT_ENGINE_SFMLRENDERER_H
 
 
-#include <SFML/Graphics.hpp>
+/*#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/Texture.hpp>
-#include <SFML/Window/Window.hpp>
+#include <SFML/Window/Window.hpp>*/
 
 #include "Renderer.h"
 
 namespace antEngine {
-    class SfmlRenderer : public Renderer {
+   /*class SfmlRenderer : public Renderer {
     public:
         sf::Image         current_frame;
         sf::Texture       current_frame_texture;
@@ -44,7 +44,7 @@ namespace antEngine {
 
         bool windowOpen() override;
 
-    };
+    };*/
 }
 
 #endif //ANT_ENGINE_SFMLRENDERER_H

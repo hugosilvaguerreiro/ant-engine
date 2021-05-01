@@ -11,7 +11,8 @@ namespace antEngine {
 
     class RigidBodyNode : public PhysicsBodyNode {
     public:
-       explicit RigidBodyNode(std::string id, Position pos, float mass=1.0);
+       explicit RigidBodyNode(std::string id, Position pos, float mass=1.0,
+                              Shape* renderingShape=nullptr, CollisionShape* shape= nullptr);
 
     };
 }

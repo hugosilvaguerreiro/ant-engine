@@ -2,8 +2,8 @@
 // Created by huguntu on 24/04/21.
 //
 
-#ifndef ANT_ENGINE_ASCIIRENDERER_H
-#define ANT_ENGINE_ASCIIRENDERER_H
+#ifndef ANT_ENGINE_NCURSESRENDERER_H
+#define ANT_ENGINE_NCURSESRENDERER_H
 
 #include <cstdio>
 #include <vector>
@@ -18,20 +18,19 @@
 #define WIDTH       800         /* Screen width */
 #define HEIGHT      600         /* Screen height */
 
-
-
+#include <ncurses.h>
 
 namespace antEngine {
 
     // inspired on https://github.com/DinoZ1729/Ray
-    class AsciiRenderer : public Renderer {
+    class NCursesRenderer : public Renderer {
         std::vector<std::vector<char>> frame;
-        std::chrono::nanoseconds lag;
-        std::chrono::system_clock::time_point time_start;
-        std::chrono::system_clock::time_point time_end;
+
+        WINDOW* mainWindow;
+        int rows, columns;
         /* time tracking variables */
     public:
-        AsciiRenderer();
+        NCursesRenderer();
 
         void renderSquare(int x, int y, int size, RGBA color, bool stroke, int stroke_size) override;
 
@@ -56,4 +55,4 @@ namespace antEngine {
 }
 
 
-#endif //ANT_ENGINE_ASCIIRENDERER_H
+#endif //ANT_ENGINE_NCURSESRENDERER_H
