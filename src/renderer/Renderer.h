@@ -8,9 +8,10 @@
 #include "../util.h"
 
 namespace antEngine {
-
+    class Camera;
     class Renderer {
     public:
+        Camera* currentCamera= nullptr;
         /*
             Renders a square
         */
@@ -26,6 +27,8 @@ namespace antEngine {
 
         virtual void registerMouseHandler(MouseHandler& handler) = 0;
 
+        virtual void drawWorldPixel(int x, int y, RGBA color)=0;
+
         /*
             Used to set the color of a pixel in the current frame
         */
@@ -39,6 +42,14 @@ namespace antEngine {
 
         // returns true if the window is still open, false otherwise
         virtual bool windowOpen() = 0;
+
+        inline void setCamera(Camera* camera) {
+            this->currentCamera = camera;
+        }
+
+        inline Camera* getCurrentCamera() {
+            return this->currentCamera;
+        }
     };
 
 }

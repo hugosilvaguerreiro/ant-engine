@@ -9,7 +9,7 @@ typedef struct {
     unsigned int width;
     unsigned int height;
 
-} WINDOW_SIZE;
+} SIZE;
 
 typedef struct {
     unsigned short int R;

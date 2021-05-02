@@ -21,7 +21,7 @@ namespace antEngine {
         void loadSceneTree(Scene *scene);
     public:
 
-        AntEngine(WINDOW_SIZE size, const std::string& title="window");
+        AntEngine(SIZE size, const std::string& title="window");
 
         //starts
         void start(Application& app);

@@ -6,12 +6,14 @@
 #define ANT_ENGINE_SCENE_H
 
 #include "Node.h"
+#include "spacial/camera/Camera.h"
 
 namespace antEngine {
 
     class Scene : public Node {
     public:
-        Scene(std::string nodeId, Position pos);
+        Camera* camera;
+        Scene(std::string nodeId, Position pos, Camera* camera= nullptr);
 
         void render(Renderer *renderer) override;
     };

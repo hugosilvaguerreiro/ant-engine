@@ -7,7 +7,7 @@
 
 namespace antEngine {
 
-    /*SfmlRenderer::SfmlRenderer(WINDOW_SIZE window_size, const std::string& title) :
+    /*SfmlRenderer::SfmlRenderer(SIZE window_size, const std::string& title) :
                                 window(sf::VideoMode(window_size.width, window_size.height), title) {
         this->size = window_size;
         this->current_frame =  sf::Image();

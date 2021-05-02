@@ -30,7 +30,7 @@ namespace antEngine {
         int rows, columns;
         /* time tracking variables */
     public:
-        NCursesRenderer();
+        NCursesRenderer(SIZE size);
 
         void renderSquare(int x, int y, int size, RGBA color, bool stroke, int stroke_size) override;
 
@@ -39,6 +39,8 @@ namespace antEngine {
         void checkEvents() override;
 
         void registerMouseHandler(MouseHandler &handler) override;
+
+        void drawWorldPixel(int x, int y, RGBA color) override;
 
         void drawPixel(unsigned int x, unsigned int y, RGBA color) override;
 

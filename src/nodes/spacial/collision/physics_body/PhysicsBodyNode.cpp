@@ -18,10 +18,10 @@ namespace antEngine {
        // std::cout << "On physics step " << this->id << " " << delta << "\n";
         this->accumulatedDelta += delta;
 
-        if (this->accumulatedDelta > 0.05) {
-            //this->pos.y += 1;
+        if (this->accumulatedDelta > 0.25) {
+            this->pos.y += 1;
             this->accumulatedDelta = 0;
-            this->rotation += 0.25;
+            //this->rotation += 0.25;
         }
     }
 

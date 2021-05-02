@@ -2,8 +2,8 @@
 // Created by huguntu on 24/04/21.
 //
 
-#include "AsciiRenderer.h"
 #include "NCursesRenderer.h"
+#include "../libAntEngine.h"
 #include <ncurses.h>
 
 const char palette[] = " .:;~=#OB8%&";
@@ -24,7 +24,7 @@ WINDOW *create_newwin(int height, int width, int starty, int startx)
 }
 
 
-antEngine::NCursesRenderer::NCursesRenderer() {
+antEngine::NCursesRenderer::NCursesRenderer(SIZE size) {
 
 
     //initscr();			/* Start curses mode 		  */
@@ -34,9 +34,10 @@ antEngine::NCursesRenderer::NCursesRenderer() {
 					        * everty thing to me 		*/
     curs_set(0);
     refresh();
-    this->mainWindow = create_newwin(500, 500, 0, 0);
-
-    getmaxyx(this->mainWindow, this->rows, this->columns);		/* get the number of rows and columns */
+    this->mainWindow = create_newwin((int)size.height+2, (int)size.width+2, 0, 0);
+    this->columns = (int)size.height;
+    this->rows = (int)size.width;
+    //getmaxyx(this->mainWindow, this->rows, this->columns); // get the number of rows and columns
 
     refresh();
 
@@ -55,7 +56,16 @@ void antEngine::NCursesRenderer::renderSquare(int x, int y, int size, RGBA color
 
 }
 
+// receives positions (x1, y1) and (x2, y2) in world coordinates
+// and writes the corresponding pixel on the screen based on the current camera
+
 void antEngine::NCursesRenderer::renderLine(int x1, int y1, int x2, int y2, RGBA color) {
+
+    // No camera available, draw nothing
+    if(this->currentCamera == nullptr) {
+        return;
+    }
+
     this->renderLineWithAntiAliasing(x1, y1, x2, y2, color);
 
     /*if(x2 < x1) {
@@ -90,18 +100,29 @@ void antEngine::NCursesRenderer::registerMouseHandler(MouseHandler &handler) {
 
 }
 
-void antEngine::NCursesRenderer::drawPixel(unsigned int x, unsigned int y, RGBA color) {
-    this->frame[(int)x*2][(int)y] = palette[(int)((float)color.A/21.25f)];
+//receives a point in world coordinates and draws a pixel on the screen based on the current camera
+void antEngine::NCursesRenderer::drawWorldPixel(int x, int y, RGBA color) {
+    Position point = this->currentCamera->projectWorldPointToCameraCoordinates(x, y);
 
-    refresh();
+    if(this->currentCamera->pointInsideCamera(point.x, point.y)) {
+        this->drawPixel(point.x, point.y, color);
+    }
 }
 
+// receives a position in screen coordinates and draws a pixel to the screen
+void antEngine::NCursesRenderer::drawPixel(unsigned int x, unsigned int y, RGBA color) {
+    if((int)x*2 > this->columns || (int)y > this->rows) {
+        return;
+    }
+    this->frame[(int)x*2][(int)y] = palette[(int)((float)color.A/21.25f)];
+    refresh();
+}
 
 void antEngine::NCursesRenderer::renderFrame() {
     for (int i = 0; i < this->rows; i++) {
         this->frame.emplace_back(std::vector<char>());
         for (int j = 0; j < this->columns; j++) {
-            mvprintw(j, i, "%c", this->frame[i][j]);
+            mvprintw(j+1, i+1, "%c", this->frame[i][j]);
             // remove the pixel immediately
             this->frame[i][j] = ' ';
         }
@@ -132,7 +153,7 @@ float rfpart(float x) {
     return 1.0f - fpart(x);
 }
 
-
+// receives coordinates in screen coordinates
 void antEngine::NCursesRenderer::renderLineWithAntiAliasing(int x0, int y0, int x1, int y1, RGBA color) {
     //https://en.wikipedia.org/wiki/Xiaolin_Wu%27s_line_algorithm
 
@@ -165,17 +186,16 @@ void antEngine::NCursesRenderer::renderLineWithAntiAliasing(int x0, int y0, int 
         RGBA c1 = RGBA{0,0,0, (unsigned short)((float)color.A * rfpart(yend) * xgap)};
         RGBA c2 = RGBA{0,0,0, (unsigned short)((float)color.A * fpart(yend) * xgap)};
 
-        this->drawPixel(ypxl1,   xpxl1, color); // rfpart(yend) * xgap);
-        //this->drawPixel(ypxl1+1, xpxl1, color); // fpart(yend) * xgap);
+        this->drawWorldPixel(ypxl1,   xpxl1, color); // rfpart(yend) * xgap);
+        this->drawWorldPixel(ypxl1+1, xpxl1, color); // fpart(yend) * xgap);
     } else {
         RGBA c1 = RGBA{0,0,0, (unsigned short)((float)color.A * rfpart(yend) * xgap)};
         RGBA c2 = RGBA{0,0,0, (unsigned short)((float)color.A * fpart(yend) * xgap)};
 
-        this->drawPixel(xpxl1, ypxl1  , color); //rfpart(yend) * xgap)
-        this->drawPixel(xpxl1, ypxl1+1, color); // fpart(yend) * xgap)
+        this->drawWorldPixel(xpxl1, ypxl1  , color); //rfpart(yend) * xgap)
+        this->drawWorldPixel(xpxl1, ypxl1+1, color); // fpart(yend) * xgap)
     }
     float intery = yend + gradient; // first y-intersection for the main loop
-
 
     // handle second endpoint
     xend = round(x1);
@@ -187,34 +207,32 @@ void antEngine::NCursesRenderer::renderLineWithAntiAliasing(int x0, int y0, int 
         RGBA c1 = RGBA{0,0,0, (unsigned short)((float)color.A * rfpart(yend) * xgap)};
         RGBA c2 = RGBA{0,0,0, (unsigned short)((float)color.A * fpart(yend) * xgap)};
 
-        this->drawPixel(ypxl2  , xpxl2, color); //rfpart(yend) * xgap);
-        this->drawPixel(ypxl2+1, xpxl2, color); //fpart(yend) * xgap);
+        this->drawWorldPixel(ypxl2  , xpxl2, color); //rfpart(yend) * xgap);
+        this->drawWorldPixel(ypxl2+1, xpxl2, color); //fpart(yend) * xgap);
     } else {
         RGBA c1 = RGBA{0,0,0, (unsigned short)((float)color.A * rfpart(yend) * xgap)};
         RGBA c2 = RGBA{0,0,0, (unsigned short)((float)color.A * fpart(yend) * xgap)};
 
-        this->drawPixel(xpxl2, ypxl2, color); // rfpart(yend) * xgap);
-        this->drawPixel(xpxl2, ypxl2+1, color); //fpart(yend) * xgap);
+        this->drawWorldPixel(xpxl2, ypxl2, color); // rfpart(yend) * xgap);
+        this->drawWorldPixel(xpxl2, ypxl2+1, color); //fpart(yend) * xgap);
     }
 
     // main loop
     if(steep) {
-        for (int x = xpxl1+1; x < xpxl2 - 1; x++) {
+        for (int x = xpxl1+1; x < xpxl2 ; x++) {
             RGBA c = RGBA{0,0,0, (unsigned short)((float)color.A * rfpart(intery))};
 
-            this->drawPixel(ipart(intery)  , x, color);// rfpart(intery))
-            this->drawPixel(ipart(intery)+1, x, color);//  fpart(intery))
+            this->drawWorldPixel(ipart(intery)  , x, color);// rfpart(intery))
+            this->drawWorldPixel(ipart(intery)+1, x, color);//  fpart(intery))
             intery = intery + gradient;
         }
     } else {
-        for(int x = xpxl1 + 1; x < xpxl2 - 1; x++) {
+        for(int x = xpxl1 + 1; x < xpxl2 ; x++) {
             RGBA c = RGBA{0,0,0, (unsigned short)((float)color.A * rfpart(intery))};
 
-            this->drawPixel(x, ipart(intery), color); //rfpart(intery))
-            this->drawPixel(x, ipart(intery)+1, color); // fpart(intery))
+            this->drawWorldPixel(x, ipart(intery), color); //rfpart(intery))
+            this->drawWorldPixel(x, ipart(intery)+1, color); // fpart(intery))
             intery = intery + gradient;
         }
     }
-
 }
-

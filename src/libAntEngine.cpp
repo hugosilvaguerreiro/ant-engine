@@ -6,10 +6,10 @@
 
 namespace antEngine {
 
-    AntEngine::AntEngine(WINDOW_SIZE window_size, const std::string& title) {
+    AntEngine::AntEngine(SIZE window_size, const std::string& title) {
        // this->renderer = new SfmlRenderer(window_size, title);
        //this->renderer = new AsciiRenderer();
-       this->renderer = new NCursesRenderer();
+       this->renderer = new NCursesRenderer(window_size);
     }
 
     void AntEngine::loadSceneTree(Scene *scene) {

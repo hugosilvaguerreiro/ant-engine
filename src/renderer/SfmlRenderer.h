@@ -23,10 +23,10 @@ namespace antEngine {
         sf::Sprite        current_frame_sprite;
         MouseHandler* handler;
 
-        WINDOW_SIZE       size;
+        SIZE       size;
         sf::RenderWindow  window;
 
-        SfmlRenderer(WINDOW_SIZE window_size, const std::string& title);
+        SfmlRenderer(SIZE window_size, const std::string& title);
 
         void renderSquare(int x, int y, int size, RGBA color, bool stroke, int stroke_size) override;
 
