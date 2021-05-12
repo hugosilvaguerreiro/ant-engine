@@ -17,4 +17,11 @@ namespace antEngine {
             it->second->render(renderer);
         }
     }
+
+    void Scene::input(Event event) {
+        std::map<std::string, Node*>::iterator it;
+        for (it = this->children.begin(); it != this->children.end(); it++) {
+            it->second->input(event);
+        }
+    }
 }

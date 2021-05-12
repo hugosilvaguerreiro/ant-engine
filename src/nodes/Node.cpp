@@ -38,6 +38,8 @@ namespace antEngine {
 
     void Node::clean() {}
 
+    void Node::input(Event event) {}
+
     void Node::setPosition(int x, int y) {
         this->pos.x = x;
         this->pos.y = y;

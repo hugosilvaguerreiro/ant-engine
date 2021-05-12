@@ -29,6 +29,7 @@ namespace antEngine {
         void onPhysicsStep(float delta);
 
         void render(Renderer *renderer) override;
+        void input(Event event) override;
     };
 }
 

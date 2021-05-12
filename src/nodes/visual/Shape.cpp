@@ -64,7 +64,7 @@ namespace antEngine {
         renderer->renderLine(v1.x, v1.y, v3.x, v3.y, color);
         renderer->renderLine(v2.x, v2.y, v4.x, v4.y, color);
         renderer->renderLine(v3.x, v3.y, v4.x, v4.y, color);
-        renderer->drawWorldPixel(v4.x, v4.y, color);
+        renderer->drawWorldPixel(v4.x+1, v4.y+1, color);
     }
 
     SquareShape::SquareShape(const std::string &nodeId, const Position &pos, int size) : Shape(nodeId, pos), size(size){

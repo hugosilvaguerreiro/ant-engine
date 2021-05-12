@@ -16,6 +16,7 @@ namespace antEngine {
         Scene(std::string nodeId, Position pos, Camera* camera= nullptr);
 
         void render(Renderer *renderer) override;
+        void input(Event event) override;
     };
 }
 

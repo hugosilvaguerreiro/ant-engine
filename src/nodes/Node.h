@@ -11,6 +11,11 @@
 #include "../renderer/Renderer.h"
 
 namespace antEngine {
+    class Event {
+    public:
+        char key_pressed;
+    };
+
     class Position {
     public:
         int x, y;
@@ -50,6 +55,9 @@ namespace antEngine {
 
         // Called when the node leaves the scene/ is deleted
         virtual void clean();
+
+        // Called when an input needs to be processed
+        virtual void input(Event event);
     };
 }
 

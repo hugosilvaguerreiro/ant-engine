@@ -6,7 +6,7 @@
 
 namespace antEngine {
 
-    AntEngine::AntEngine(SIZE window_size, const std::string& title) {
+    AntEngine::AntEngine(SIZE window_size, const std::string& title) : inputManager(title) {
        // this->renderer = new SfmlRenderer(window_size, title);
        //this->renderer = new AsciiRenderer();
        this->renderer = new NCursesRenderer(window_size);
@@ -36,18 +36,23 @@ namespace antEngine {
         // load the main scene
         this->loadSceneTree(app.mainScene);
         this->physicsEngine.start();
+        this->inputManager.Start();
         while (this->renderer->windowOpen()) {
-            //this->renderer->renderSquare(10,10, 600, RGBA{0,0,0,50});
-            //this->renderer->renderSquare(100,100, 50, RGBA{0,0,0,200});
-            //this->renderer->renderLine(10, 10, 500, 300,  RGBA{0,0,0,200});
+             this->renderer->checkEvents(); //checks if window has been closed
 
-            this->renderer->checkEvents(); //checks if window has been closed
+            //get all events
+            while(this->inputManager.HasEvents()) {
+                auto ev = this->inputManager.GetEvent();
+                app.mainScene->input(*ev);
+            }
             this->physicsEngine.physicsUpdate();
+
             app.mainScene->render(this->renderer);
             this->renderer->renderFrame();
             this->renderer->clearFrame();
         }
         this->physicsEngine.stop();
+        this->inputManager.Stop();
         //app.stop();
     }
 

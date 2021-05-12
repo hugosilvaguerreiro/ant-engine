@@ -33,6 +33,7 @@ antEngine::NCursesRenderer::NCursesRenderer(SIZE size) {
     cbreak();			    /* Line buffering disabled, Pass on
 					        * everty thing to me 		*/
     curs_set(0);
+    noecho();
     refresh();
     this->mainWindow = create_newwin((int)size.height+2, (int)size.width+2, 0, 0);
     this->columns = (int)size.height;

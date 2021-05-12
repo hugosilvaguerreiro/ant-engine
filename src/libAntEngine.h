@@ -8,6 +8,7 @@
 #include "renderer/Renderer.h"
 #include "renderer/SfmlRenderer.h"
 #include "renderer/AsciiRenderer.h"
+#include "InputManager.h"
 
 namespace antEngine {
 
@@ -16,6 +17,7 @@ namespace antEngine {
     class AntEngine {
     private:
         PhysicsEngine physicsEngine;
+        InputManager inputManager;
         Renderer *renderer;
 
         void loadSceneTree(Scene *scene);
